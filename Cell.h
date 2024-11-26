@@ -1,7 +1,3 @@
-//
-// Created by quent on 26/11/2024.
-//
-
 #ifndef CELL_H
 #define CELL_H
 
@@ -12,6 +8,17 @@ private:
     int x;
     int y;
     bool alive;
+
+public:
+
+    Cell();
+    Cell(int nbrx,int nbry);
+
+    int get_x() { return x; }    
+    int get_y() { return y; }
+    int set_x(int nbr) { return x; }
+    int set_y(int nbr) { return y; }
+    bool get_alive();
 
 };
 
