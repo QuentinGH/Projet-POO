@@ -22,5 +22,8 @@ int main() {
          << "\n- Height : " << values.first
          << "\n- Width : " << values.second << std::endl;
 
+    Grid g(values.first,values.second);
+    g.Affichemap();
+
     return 0;
 }
