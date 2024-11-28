@@ -11,14 +11,6 @@ Cell::Cell(int nbrx,int nbry) {
     this->y = nbry;
 }
 
-int Cell::get_x() { 
-    return this->x; 
-}    
-
-int Cell::get_y() { 
-    return this->y; 
-}
-
 int Cell::set_x(int nbr) { 
     this->x = nbr;
     return x; 
