@@ -18,7 +18,8 @@ public:
     int get_y() { return y; }
     int set_x(int nbr);
     int set_y(int nbr);
-    bool get_alive();
+    bool get_alive() { return alive; };
+    bool set_alive(bool b);
 
 };
 
