@@ -21,6 +21,7 @@ int Cell::set_y(int nbr) {
     return y; 
 }
 
-bool Cell::get_alive() {
+bool Cell::set_alive(bool b) {
+    this->alive = b;
     return this->alive;
 }
