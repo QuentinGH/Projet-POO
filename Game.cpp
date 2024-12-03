@@ -12,12 +12,11 @@ Game::Game(int nbr1, int nbr2) : Grid(nbr1, nbr2), taille1(nbr1), taille2(nbr2) 
 }
 
 Game::~Game() {
-    for (auto cell : tab) {
-        delete cell; // Supprime chaque cellule
+    for (int i = 0; i < taille1 * taille2; i++) {
+        delete tab[i];
     }
-    tab.clear(); // Vide le vecteur pour éviter les références invalides
+    delete[] tab.data();  // Utilisation de .data() pour récupérer le pointeur brut
 }
-
 
 int Game::getTaille1() {
     return taille1;
@@ -36,17 +35,14 @@ Cell& Game::getCell(int i, int j) {
 
 void Game::modify(int x, int y, bool b) {
     if (x >= 0 && x < get_height() && y >= 0 && y < get_width()) {
-        // Modifier la valeur dans la grille
-        get_Gmap()[x][y] = b;
-
-        getCell(x, y).set_alive(b);
-
-        syncTabWithGmap();
-    } else {
+        get_Gmap()[x][y] = b;  // Modifier la valeur dans la grille
+        Cell& cell = getCell(x, y);  // Obtenir la cellule correspondante
+        cell.set_alive(b);  // Mettre à jour l'état de la cellule
+    }
+    else {
         throw std::runtime_error("Erreur : mauvaises coordonnées");
     }
 }
-
 
 void Game::afficherCell(int i, int j) {
     try {
@@ -58,29 +54,27 @@ void Game::afficherCell(int i, int j) {
     }
 }
 
-void Game::syncGmapWithTab() {
-    for (int i = 0; i < taille1; ++i) {
-        for (int j = 0; j < taille2; ++j) {
-            get_Gmap()[i][j] = getCell(i, j).get_alive();
+int Game::detection(Cell &c) {
+    int count = 0;
+    for (int y = getCell(c.get_x(), c.get_y()).get_y()-1; y < getCell(c.get_x(), c.get_y()).get_y()+2; y++) {
+        for (int x = getCell(c.get_x(), c.get_y()).get_x()-1; x < getCell(c.get_x(), c.get_y()).get_x()+2; x++) {
+            Cell& cell = getCell(x, y);
+            if (cell.get_alive() == true) {
+                count++;
+            }
         }
     }
+    return count;
 }
 
-void Game::syncTabWithGmap() {
-    for (int i = 0; i < taille1; ++i) {
-        for (int j = 0; j < taille2; ++j) {
-            getCell(i, j).set_alive(get_Gmap()[i][j]);
-        }
+void Game::behavior(Cell &c) {
+    if (c.get_alive() && (detection(c) == 2) || (detection(c) == 3)) {
+        c.set_alive(true);
+    }
+    else if (!c.get_alive() && detection(c) == 3) {
+        c.set_alive(true);
+    }
+    else {
+        c.set_alive(false);
     }
 }
-
-void Game::sauvegarder(const std::string& nom_fichier) {
-    syncGmapWithTab(); // Synchronisation avant la sauvegarde
-    Grid::sauvegarder(nom_fichier); // Appeler la sauvegarde de Grid
-}
-
-void Game::charger(const std::string& nom_fichier) {
-    Grid::charger(nom_fichier); // Charger via Grid
-    syncTabWithGmap(); // Synchronisation après le chargement
-}
-
