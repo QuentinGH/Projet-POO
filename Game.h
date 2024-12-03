@@ -19,6 +19,10 @@ public:
     Cell& getCell(int i, int j);
     void modify(int x, int y, bool b);
     void afficherCell(int i, int j);
+    void syncGmapWithTab();
+    void syncTabWithGmap();
+    void sauvegarder(const std::string& nom_fichier);
+    void charger(const std::string& nom_fichier);
 };
 
 #endif // GAME_H
