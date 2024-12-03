@@ -29,9 +29,12 @@ int main() {
     Game jeu(values.first,values.second);
     jeu.afficherCell(5,1);
 
-    jeu.modify(0, 1, 1);
+    jeu.modify(1, 1, 1);
+    jeu.Affichemap();
 
     jeu.modify(2, 1, 1);
+    jeu.Affichemap();
+
     jeu.modify(1, 3, 1);
     jeu.Affichemap();
 
