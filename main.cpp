@@ -26,16 +26,30 @@ int main() {
 
     Grid g(values.first,values.second);
     g.Affichemap();
+
+
     Game jeu(values.first,values.second);
     jeu.afficherCell(5,1);
+    jeu.sauvegarder("grille_out");
 
     jeu.modify(1, 1, 1);
     jeu.Affichemap();
+    jeu.sauvegarder("grille_out");
 
     jeu.modify(2, 1, 1);
     jeu.Affichemap();
+    jeu.sauvegarder("grille_out");
 
     jeu.modify(1, 3, 1);
+    jeu.Affichemap();
+
+    jeu.charger("grille_out");
+    jeu.Affichemap();
+
+    jeu.charger("grille_out");
+    jeu.Affichemap();
+
+    jeu.charger("grille_out");
     jeu.Affichemap();
 
 
