@@ -1,5 +1,7 @@
 #include "Grid.h"
 #include <iostream>
+#include <bits/stdc++.h>
+#include <vector>
 
 Grid::Grid() {
     this->height = 0;
@@ -21,16 +23,6 @@ int Grid::set_width(int nbr) {
     return this->width = nbr;
 }
 
-std::vector<std::vector<bool>> Grid::modify(int x, int y, bool b) {
-    if (x >= 0 && x < height && y >= 0 && y < width) {
-        this->Gmap[x][y] = b; // Modify the value at position (x, y)
-    }
-    else {
-        throw std::runtime_error("Erreur : mauvaises coordonées");
-    }
-    return Gmap;
-}
-
 void Grid::Affichemap() {
     for (size_t i = 0; i < Gmap.size(); i++) {
         for (size_t j = 0; j < Gmap[i].size(); j++) {
@@ -40,3 +32,4 @@ void Grid::Affichemap() {
     }
     std::cout << std::endl;
 }
+
