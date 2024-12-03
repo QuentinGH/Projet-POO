@@ -1,6 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 #include <vector>
+#include <string>
 
 
 class Grid {
@@ -19,7 +20,6 @@ public:
     std::vector<std::vector<bool>> get_Gmap() { return Gmap;}
     int set_height(int nbr);
     int set_width(int nbr);
-    std::vector<std::vector<bool>> modify(int x, int y, bool b);
     void Affichemap();
 };
 
