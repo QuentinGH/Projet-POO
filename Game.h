@@ -8,7 +8,7 @@ class Game : public Grid {
 private:
     int taille1;
     int taille2;
-    Cell** tab;
+    std::vector<Cell*> tab;
 
 public:
     Game(int nbr1, int nbr2);
