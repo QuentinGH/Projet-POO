@@ -2,8 +2,8 @@
 #include <stdexcept>
 #include <iostream>
 
-Game::Game(int nbr1, int nbr2) : taille1(nbr1), taille2(nbr2) {
-    tab = new Cell*[taille1 * taille2];
+Game::Game(int nbr1, int nbr2) : Grid(nbr1, nbr2), taille1(nbr1), taille2(nbr2) {
+    tab.resize(taille1 * taille2);
     for (int i = 0; i < taille1; i++) {
         for (int j = 0; j < taille2; j++) {
             tab[i * taille2 + j] = new Cell(i, j);
@@ -15,7 +15,7 @@ Game::~Game() {
     for (int i = 0; i < taille1 * taille2; i++) {
         delete tab[i];
     }
-    delete[] tab;
+    delete[] tab.data();  // Utilisation de .data() pour récupérer le pointeur brut
 }
 
 int Game::getTaille1() {
@@ -35,12 +35,12 @@ Cell& Game::getCell(int i, int j) {
 
 void Game::modify(int x, int y, bool b) {
     if (x >= 0 && x < get_height() && y >= 0 && y < get_width()) {
-        get_Gmap()[x][y] = b; // Modify the value at position (x, y)
-        Cell& cell = getCell(x, y);
-        cell.set_alive(b);
+        get_Gmap()[x][y] = b;  // Modifier la valeur dans la grille
+        Cell& cell = getCell(x, y);  // Obtenir la cellule correspondante
+        cell.set_alive(b);  // Mettre à jour l'état de la cellule
     }
     else {
-        throw std::runtime_error("Erreur : mauvaises coordonées");
+        throw std::runtime_error("Erreur : mauvaises coordonnées");
     }
 }
 
