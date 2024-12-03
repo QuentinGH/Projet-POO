@@ -12,7 +12,7 @@ Grid::Grid() {
 Grid::Grid(int nbrheight,int nbrwidth) {
     this->height = nbrheight;
     this->width = nbrwidth;
-    this->Gmap = std::vector<std::vector<bool>>(this->height, std::vector<bool>(this->width, false));
+    this->Gmap.resize(height, std::vector<bool>(width, 0));
 }
 
 int Grid::set_height(int nbr) {
