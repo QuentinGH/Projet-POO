@@ -9,6 +9,7 @@ Cell::Cell() {
 Cell::Cell(int nbrx,int nbry) {
     this->x = nbrx;
     this->y = nbry;
+    this->alive = 0;
 }
 
 int Cell::set_x(int nbr) { 
