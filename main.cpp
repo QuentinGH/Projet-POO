@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <utility>
 #include "Grid.h"
+#include "Game.h"
+
 
 int main() {
     Grid grille;
@@ -24,6 +26,15 @@ int main() {
 
     Grid g(values.first,values.second);
     g.Affichemap();
+    Game jeu(values.first,values.second);
+    jeu.afficherCell(5,1);
+
+    jeu.modify(0, 1, 1);
+
+    jeu.modify(2, 1, 1);
+    jeu.modify(1, 3, 1);
+    jeu.Affichemap();
+
 
     return 0;
 }
