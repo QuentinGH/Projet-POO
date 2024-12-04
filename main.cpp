@@ -5,7 +5,6 @@
 
 #include "CL_Window.h"
 #include "Grid.h"
-#include "Game.h"
 
 int main() {
     Grid grille;
@@ -25,9 +24,8 @@ int main() {
          << "\n- Height : " << values.first
          << "\n- Width : " << values.second << std::endl;
 
-    Grid g(values.first,values.second);
-    Game jeu(values.first, values.second);
-
+    Grid jeu(values.first,values.second);
+/*
     jeu.modify(0, 0, 1);
     jeu.sauvegarder("grille_out");
     jeu.modify(1, 1, 1);
@@ -40,6 +38,27 @@ int main() {
     jeu.sauvegarder("grille_out");
     jeu.modify(1, 0, 1);
     jeu.sauvegarder("grille_out");
+    jeu.Affichemap();
+*/
+    jeu.modify(1, 9, 1);
+    jeu.modify(1, 10, 1);
+    jeu.modify(1, 11, 1);
+
+    jeu.modify(2, 3, 1);
+    jeu.modify(2, 4, 1);
+    jeu.modify(2, 5, 1);
+
+    jeu.modify(2, 8, 1);
+    jeu.modify(2, 9, 1);
+    jeu.modify(2, 10, 1);
+
+    jeu.modify(6, 6, 1);
+    jeu.modify(6, 7, 1);
+    jeu.modify(7, 6, 1);
+
+    jeu.modify(8, 9, 1);
+    jeu.modify(9, 8, 1);
+    jeu.modify(9, 9, 1);
     jeu.Affichemap();
 
     CL_Window wind(values.first, values.second);
