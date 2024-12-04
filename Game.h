@@ -21,6 +21,8 @@ public:
     void afficherCell(int i, int j);
     int detection(Cell &c);
     void behavior(int x, int y);
+    int toricX(int x);
+    int toricY(int y);
 };
 
 #endif // GAME_H
