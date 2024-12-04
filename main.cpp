@@ -25,29 +25,27 @@ int main() {
          << "\n- Width : " << values.second << std::endl;
 
     Grid g(values.first,values.second);
-    g.Affichemap();
-    Game jeu(values.first,values.second);
-    jeu.afficherCell(5,1);
-/*
+    Game jeu(values.first, values.second);
+
+    jeu.modify(0, 0, 1);
     jeu.modify(1, 1, 1);
-    jeu.Affichemap();
-
     jeu.modify(2, 1, 1);
-    jeu.Affichemap();
-
     jeu.modify(1, 3, 1);
+    jeu.modify(-1, 0,1);
+    jeu.modify(1, 0, 1);
     jeu.Affichemap();
-*/
 
+// à mettre dans une classe à part : problème avec Game::behavior & Game::detection
     int size_value_h = 800;
     int size_value_w = 800;
     int size_cell;
     if (values.first > values.second) {
         size_cell = size_value_h / values.first;
-        //size_value_h -= values.first;
+        size_value_w -= (size_cell * values.first - size_cell * values.second);
     }
     else {
         size_cell = size_value_w / values.second;
+        size_value_h -= (size_cell * values.second - size_cell * values.first);
     }
     int size_outline = size_cell / 16;
 
@@ -55,6 +53,7 @@ int main() {
 
     while (window.isOpen())
     {
+        window.setFramerateLimit(1);
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -70,16 +69,18 @@ int main() {
                 square.setOutlineThickness(size_outline);
                 square.setPosition(size_cell * count_2, size_cell * count_1);
 
-                if (g.get_Gmap()[count_1][count_2] == true) {
+                if (jeu.get_Gmap()[count_2][count_1] == true) {
                     square.setFillColor(sf::Color::Black);
                 }
-                else if (g.get_Gmap()[count_1][count_2] == false) {
+                else if (jeu.get_Gmap()[count_2][count_1] == false) {
                     square.setFillColor(sf::Color::White);
                 }
                 window.draw(square);
+                jeu.behavior(count_2, count_1);
             }
         }
         window.display();
+        jeu.Affichemap();
     }
 
     return 0;
