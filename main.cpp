@@ -1,8 +1,9 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <utility>
+
+#include "CL_Window.h"
 #include "Grid.h"
 #include "Game.h"
 
@@ -28,60 +29,21 @@ int main() {
     Game jeu(values.first, values.second);
 
     jeu.modify(0, 0, 1);
+    jeu.sauvegarder("grille_out");
     jeu.modify(1, 1, 1);
+    jeu.sauvegarder("grille_out");
     jeu.modify(2, 1, 1);
+    jeu.sauvegarder("grille_out");
     jeu.modify(1, 3, 1);
+    jeu.sauvegarder("grille_out");
     jeu.modify(-1, 0,1);
+    jeu.sauvegarder("grille_out");
     jeu.modify(1, 0, 1);
+    jeu.sauvegarder("grille_out");
     jeu.Affichemap();
 
-// à mettre dans une classe à part : problème avec Game::behavior & Game::detection
-    int size_value_h = 800;
-    int size_value_w = 800;
-    int size_cell;
-    if (values.first > values.second) {
-        size_cell = size_value_h / values.first;
-        size_value_w -= (size_cell * values.first - size_cell * values.second);
-    }
-    else {
-        size_cell = size_value_w / values.second;
-        size_value_h -= (size_cell * values.second - size_cell * values.first);
-    }
-    int size_outline = size_cell / 16;
-
-    sf::RenderWindow window(sf::VideoMode(size_value_w, size_value_h), "Life's Game");
-
-    while (window.isOpen())
-    {
-        window.setFramerateLimit(1);
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        for (int count_1 = 0; count_1 < values.first; count_1++) {
-            for (int count_2 = 0; count_2 < values.second; count_2++) {
-                sf::RectangleShape square(sf::Vector2f((values.first * size_cell) / values.first, (values.second * size_cell) / values.second));
-                square.setOutlineColor(sf::Color::Black);
-                square.setOutlineThickness(size_outline);
-                square.setPosition(size_cell * count_2, size_cell * count_1);
-
-                if (jeu.get_Gmap()[count_2][count_1] == true) {
-                    square.setFillColor(sf::Color::Black);
-                }
-                else if (jeu.get_Gmap()[count_2][count_1] == false) {
-                    square.setFillColor(sf::Color::White);
-                }
-                window.draw(square);
-                jeu.behavior(count_2, count_1);
-            }
-        }
-        window.display();
-        jeu.Affichemap();
-    }
+    CL_Window wind(values.first, values.second);
+    wind.eternity(jeu);
 
     return 0;
 }
