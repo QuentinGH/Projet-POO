@@ -38,8 +38,8 @@ void Game::modify(int x, int y, bool b) {
     int toric_y = toricY(y);
     if (toric_x >= 0 && toric_x < get_height() && toric_y >= 0 && toric_y < get_width()) {
         get_Gmap()[toric_x][toric_y] = b;  // Modifier la valeur dans la grille
-        Cell& cell = getCell(toric_x, toric_y);  // Obtenir la cellule correspondante
-        cell.set_alive(b);  // Mettre à jour l'état de la cellule
+        getCell(toric_x, toric_y).set_alive(b);
+        syncTabWithGmap();  // Mettre à jour l'état de la cellule
     }
     else {
         throw std::runtime_error("Erreur : mauvaises coordonnées");
@@ -54,6 +54,32 @@ void Game::afficherCell(int i, int j) {
     } catch (const std::out_of_range& e) {
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
+}
+
+void Game::syncGmapWithTab() {
+    for (int i = 0; i < taille1; ++i) {
+        for (int j = 0; j < taille2; ++j) {
+            get_Gmap()[i][j] = getCell(i, j).get_alive();
+        }
+    }
+}
+
+void Game::syncTabWithGmap() {
+    for (int i = 0; i < taille1; ++i) {
+        for (int j = 0; j < taille2; ++j) {
+            getCell(i, j).set_alive(get_Gmap()[i][j]);
+        }
+    }
+}
+
+void Game::sauvegarder(const std::string& nom_fichier) {
+    syncGmapWithTab(); // Synchronisation avant la sauvegarde
+    Grid::sauvegarder(nom_fichier); // Appeler la sauvegarde de Grid
+}
+
+void Game::charger(const std::string& nom_fichier) {
+    Grid::charger(nom_fichier); // Charger via Grid
+    syncTabWithGmap(); // Synchronisation après le chargement
 }
 
 int Game::detection(Cell &c) {
