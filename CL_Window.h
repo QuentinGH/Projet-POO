@@ -1,10 +1,7 @@
 #ifndef CL_WINDOW_H
 #define CL_WINDOW_H
 
-#include <SFML/Graphics.hpp>
-#include <thread>
-#include <chrono>
-#include "Game.h"
+#include "Grid.h"
 
 class CL_Window {
 private:
@@ -28,7 +25,7 @@ public:
     void set_size_h(int setting);
     void set_size_w(int setting);
     void set_size_cell(int h, int w);
-    void eternity(Game& jeu);
+    void eternity(Grid& jeu);
 };
 
 #endif
