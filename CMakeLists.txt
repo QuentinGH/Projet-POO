@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(ProjetPOO main.cpp
         Grid.h
-        Cell.h)
+        Cell.h
+        Cell.cpp
+        Grid.cpp)
