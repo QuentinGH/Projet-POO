@@ -20,7 +20,7 @@ public:
     void modify(int x, int y, bool b);
     void afficherCell(int i, int j);
     int detection(Cell &c);
-    void behavior(Cell &c);
+    void behavior(int x, int y);
 };
 
 #endif // GAME_H
