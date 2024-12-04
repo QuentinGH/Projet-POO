@@ -8,8 +8,6 @@ add_executable(SFML_test main.cpp
         Grid.cpp
         Cell.h
         Cell.cpp
-        Game.h
-        Game.cpp
         CL_Window.cpp
         CL_Window.h
 )
