@@ -12,17 +12,14 @@ Cell::Cell(int nbrx,int nbry) {
     this->alive = 0;
 }
 
-int Cell::set_x(int nbr) { 
-    this->x = nbr;
-    return x; 
+int Cell::set_x(int nbr) {
+    return this->x = nbr;
 }
 
 int Cell::set_y(int nbr) { 
-    this->y = nbr;
-    return y; 
+    return this->y = nbr;
 }
 
 bool Cell::set_alive(bool b) {
-    this->alive = b;
-    return this->alive;
+    return this->alive = b;
 }
