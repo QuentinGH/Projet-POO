@@ -26,17 +26,19 @@ int Game::getTaille2() {
     return taille2;
 }
 
-Cell& Game::getCell(int i, int j) {
+Cell& Game::getCell(int i, int j) {/*
     if (i < 0 || i >= taille1 || j < 0 || j >= taille2) {
         throw std::out_of_range("Index hors limites");
-    }
+    }*/
     return *tab[i * taille2 + j];
 }
 
 void Game::modify(int x, int y, bool b) {
-    if (x >= 0 && x < get_height() && y >= 0 && y < get_width()) {
-        get_Gmap()[x][y] = b;  // Modifier la valeur dans la grille
-        Cell& cell = getCell(x, y);  // Obtenir la cellule correspondante
+    int toric_x = toricX(x);
+    int toric_y = toricY(y);
+    if (toric_x >= 0 && toric_x < get_height() && toric_y >= 0 && toric_y < get_width()) {
+        get_Gmap()[toric_x][toric_y] = b;  // Modifier la valeur dans la grille
+        Cell& cell = getCell(toric_x, toric_y);  // Obtenir la cellule correspondante
         cell.set_alive(b);  // Mettre à jour l'état de la cellule
     }
     else {
@@ -55,11 +57,13 @@ void Game::afficherCell(int i, int j) {
 }
 
 int Game::detection(Cell &c) {
+    int toric_x = toricX(c.get_x());
+    int toric_y = toricY(c.get_y());
     int count = 0;
-    for (int y = c.get_y()-1; y < c.get_y()+2; y++) {
-        for (int x = c.get_x()-1; x < c.get_x()+2; x++) {
-            Cell& cell = getCell(x, y);
-            if (cell.get_alive() == true && cell.get_x() != c.get_x() && cell.get_y() != c.get_y()) {
+    for (int y = toric_x-1; y <= toric_x+1; y++) {
+        for (int x = toric_y-1; x <= toric_y+1; x++) {
+            Cell& cell = getCell(toric_x, toric_y);
+            if (cell.get_alive() && cell.get_x() != c.get_x() && cell.get_y() != c.get_y()) {
                 count++;
             }
         }
@@ -79,4 +83,14 @@ void Game::behavior(int x, int y) {
     else {
         this->modify(c.get_x(), c.get_y(), false);
     }
+}
+
+int Game::toricX(int x) {
+    int toric_x = (x + this->taille2) % this->taille2;
+    return toric_x;
+}
+
+int Game::toricY(int y) {
+    int toric_y = (y + this->taille1) % this->taille1;
+    return toric_y;
 }
