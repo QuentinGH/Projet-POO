@@ -56,10 +56,10 @@ void Game::afficherCell(int i, int j) {
 
 int Game::detection(Cell &c) {
     int count = 0;
-    for (int y = getCell(c.get_x(), c.get_y()).get_y()-1; y < getCell(c.get_x(), c.get_y()).get_y()+2; y++) {
-        for (int x = getCell(c.get_x(), c.get_y()).get_x()-1; x < getCell(c.get_x(), c.get_y()).get_x()+2; x++) {
+    for (int y = c.get_y()-1; y < c.get_y()+2; y++) {
+        for (int x = c.get_x()-1; x < c.get_x()+2; x++) {
             Cell& cell = getCell(x, y);
-            if (cell.get_alive() == true) {
+            if (cell.get_alive() == true && cell.get_x() != c.get_x() && cell.get_y() != c.get_y()) {
                 count++;
             }
         }
@@ -67,14 +67,16 @@ int Game::detection(Cell &c) {
     return count;
 }
 
-void Game::behavior(Cell &c) {
-    if (c.get_alive() && (detection(c) == 2) || (detection(c) == 3)) {
-        c.set_alive(true);
+void Game::behavior(int x, int y) {
+    Cell& c = getCell(x, y);
+    int detec = detection(c);
+    if (c.get_alive() && (detec == 2 || detec == 3)) {
+        this->modify(c.get_x(), c.get_y(), true);
     }
-    else if (!c.get_alive() && detection(c) == 3) {
-        c.set_alive(true);
+    else if (!c.get_alive() && detec == 3) {
+        this->modify(c.get_x(), c.get_y(), true);
     }
     else {
-        c.set_alive(false);
+        this->modify(c.get_x(), c.get_y(), false);
     }
 }
