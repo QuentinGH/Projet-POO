@@ -1,5 +1,10 @@
 #include "CL_Window.h"
 
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <thread>
+#include <chrono>
+
 CL_Window::CL_Window(int h, int w) {
     this->height = h;
     this->width = w;
@@ -15,6 +20,10 @@ void CL_Window::set_size_w(int setting) {
 }
 
 void CL_Window::set_size_cell(int h, int w) {
+    if (h <= 0 || w <= 0) {
+        std::cerr << "Invalid grid dimensions: height and width must be positive." << std::endl;
+        return;
+    }
     if (h > w) {
         this->size_cell = this->size_h / h;
         this->size_w -= (this->size_cell * h - this->size_cell * w);
@@ -26,8 +35,8 @@ void CL_Window::set_size_cell(int h, int w) {
     this->size_outline = this->size_cell / 16;
 }
 
-void CL_Window::eternity(Game& jeu) {
-    sf::RenderWindow wind(sf::VideoMode(size_w, size_h), "Life's Game");
+void CL_Window::eternity(Grid& jeu) {
+    sf::RenderWindow wind(sf::VideoMode(this->size_w, this->size_h), "Life's Game");
     while (wind.isOpen())
     {
         wind.setFramerateLimit(60);
@@ -41,22 +50,22 @@ void CL_Window::eternity(Game& jeu) {
         wind.clear();
         for (int count_1 = 0; count_1 < this->height; count_1++) {
             for (int count_2 = 0; count_2 < this->width; count_2++) {
-                sf::RectangleShape square(sf::Vector2f((this->height * size_cell) / this->height, (this->width * size_cell) / this->width));
+                sf::RectangleShape square(sf::Vector2f((this->height * this->size_cell) / this->height, (this->width * this->size_cell) / this->width));
                 square.setOutlineColor(sf::Color::Black);
-                square.setOutlineThickness(size_outline);
-                square.setPosition(size_cell * count_2, size_cell * count_1);
+                square.setOutlineThickness(this->size_outline);
+                square.setPosition(this->size_cell * count_2, this->size_cell * count_1);
 
-                if (jeu.get_Gmap()[count_1][count_2] == true) {
+                if (jeu.get_Gmap()[count_1][count_2]->get_alive() == true) {
                     square.setFillColor(sf::Color::Black);
                 }
-                else if (jeu.get_Gmap()[count_1][count_2] == false) {
+                else {
                     square.setFillColor(sf::Color::White);
                 }
                 wind.draw(square);
+                jeu.behavior(count_1, count_2);
             }
         }
         wind.display();
-        jeu.behavior(1, 1);
         jeu.Affichemap();
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     }
