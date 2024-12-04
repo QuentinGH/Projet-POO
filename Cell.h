@@ -12,11 +12,12 @@ public:
     Cell();
     Cell(int nbrx,int nbry);
 
-    int get_x() { return x; }
-    int get_y() { return y; }
+    int get_x() const { return x; }
+    int get_y() const { return y; }
     int set_x(int nbr);
     int set_y(int nbr);
-    bool get_alive() { return alive; };
+    bool get_alive() const { return alive; };
+
     bool set_alive(bool b);
 
 };
