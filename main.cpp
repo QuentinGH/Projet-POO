@@ -3,7 +3,6 @@
 #include <iomanip>
 #include <utility>
 #include "Grid.h"
-#include "Game.h"
 
 
 int main() {
@@ -24,11 +23,9 @@ int main() {
          << "\n- Height : " << values.first
          << "\n- Width : " << values.second << std::endl;
 
-    Grid g(values.first,values.second);
-    g.Affichemap();
 
-
-    Game jeu(values.first,values.second);
+    Grid jeu(values.first,values.second);
+    jeu.Affichemap();
     jeu.afficherCell(5,1);
     jeu.sauvegarder("grille_out");
 
