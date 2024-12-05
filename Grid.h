@@ -29,6 +29,7 @@ public:
     int set_height(int nbr);
     int set_width(int nbr);
     void modify(int x, int y, bool b);
+    void update();
     void Affichemap();
     Cell& getCell(int i, int j);
     void afficherCell(int i, int j);
