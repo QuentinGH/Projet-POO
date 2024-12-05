@@ -40,25 +40,27 @@ int main() {
     jeu.sauvegarder("grille_out");
     jeu.Affichemap();
 */
-    jeu.modify(1, 9, 1);
-    jeu.modify(1, 10, 1);
-    jeu.modify(1, 11, 1);
+    jeu.modify(1, 9, 1, jeu.get_Gmap());
+    jeu.modify(1, 10, 1, jeu.get_Gmap());
+    jeu.modify(1, 11, 1, jeu.get_Gmap());
 
-    jeu.modify(2, 3, 1);
-    jeu.modify(2, 4, 1);
-    jeu.modify(2, 5, 1);
+    jeu.modify(2, 3, 1, jeu.get_Gmap());
+    jeu.modify(2, 4, 1, jeu.get_Gmap());
+    jeu.modify(2, 5, 1, jeu.get_Gmap());
 
-    jeu.modify(2, 8, 1);
-    jeu.modify(2, 9, 1);
-    jeu.modify(2, 10, 1);
+    jeu.modify(2, 8, 1, jeu.get_Gmap());
+    jeu.modify(2, 9, 1, jeu.get_Gmap());
+    jeu.modify(2, 10, 1, jeu.get_Gmap());
 
-    jeu.modify(6, 6, 1);
-    jeu.modify(6, 7, 1);
-    jeu.modify(7, 6, 1);
+    jeu.modify(6, 6, 1, jeu.get_Gmap());
+    jeu.modify(6, 7, 1, jeu.get_Gmap());
+    jeu.modify(7, 6, 1, jeu.get_Gmap());
 
-    jeu.modify(8, 9, 1);
-    jeu.modify(9, 8, 1);
-    jeu.modify(9, 9, 1);
+    jeu.modify(8, 9, 1, jeu.get_Gmap());
+    jeu.modify(9, 8, 1, jeu.get_Gmap());
+    jeu.modify(9, 9, 1, jeu.get_Gmap());
+
+
     jeu.Affichemap();
 
     CL_Window wind(values.first, values.second);
