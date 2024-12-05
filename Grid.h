@@ -30,12 +30,12 @@ public:
 
     int set_height(int nbr);
     int set_width(int nbr);
-    void modify(int x, int y, bool b);
+    void modify(int x, int y, bool b, std::vector<std::vector<Cell*>> &copy);
     void Affichemap();
     Cell& getCell(int i, int j);
     void afficherCell(int i, int j);
 
-    int detection(Cell &c, std::vector<std::vector<Cell*>> &copy);
+    int detection(Cell c, std::vector<std::vector<Cell*>> copy);
     std::vector<std::vector<Cell*>> behavior(int x, int y);
 
     void sauvegarder(const std::string& nom_fichier);
