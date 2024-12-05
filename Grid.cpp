@@ -46,9 +46,10 @@ int Grid::set_width(int nbr) {
     return this->width = nbr;
 }
 
-void Grid::modify(int x, int y, bool b) {
-    int toric_x = (x + this->height) % this->height;
-    int toric_y = (y + this->width) % this->width;
+void Grid::modify(int x, int y, bool b, std::vector<std::vector<Cell*>> &g) {
+    int toric_x = (x + g.size()) % this->height; // g.size() donne le nombre de lignes (hauteur)
+    int toric_y = (y + g[0].size()) % this->width; // g[0].size() donne le nombre de colonnes (largeur)
+
     if (toric_x >= 0 && toric_x < get_height() && toric_y >= 0 && toric_y < get_width()) {
         Gmap[toric_x][toric_y]->set_alive(b);  // Appel de la méthode sur l'objet Cell
     } else {
@@ -84,32 +85,32 @@ void Grid::afficherCell(int i, int j) {
     }
 }
 
-int Grid::detection(Cell &c, std::vector<std::vector<Cell*>> &copy) {
+int Grid::detection(Cell c, std::vector<std::vector<Cell*>> copy) {
     int left;
     int right;
     int top;
     int bot;
     int count = 0;
 
-    if (c.get_x()-1 < 0) {left = this->height - (abs(c.get_x()-1) % this->height);}
-    else {left = (c.get_x()-1) % this->height;}
-    if (c.get_x()+1 < 0) {right = this->height - (abs(c.get_x()+1) % this->height);}
-    else {right = (c.get_x()+1) % this->height;}
-    if (c.get_y()-1 < 0) {top = this->width - (abs(c.get_y()-1) % this->width);}
-    else {top = (c.get_y()-1) % this->width;}
-    if (c.get_x()+1 < 0) {bot = this->width - (abs(c.get_x()+1) % this->width);}
-    else {bot = (c.get_x()+1) % this->width;}
+    if (c.get_y()-1 < 0) {left = this->width - (abs(c.get_y()-1) % this->width);}
+    else {left = (c.get_y()-1) % this->width;}
+    if (c.get_y()+1 < 0) {right = this->width - (abs(c.get_y()+1) % this->width);}
+    else {right = (c.get_y()+1) % this->width;}
+    if (c.get_x()-1 < 0) {top = this->height - (abs(c.get_x()-1) % this->height);}
+    else {top = (c.get_x()-1) % this->height;}
+    if (c.get_x()+1 < 0) {bot = this->height - (abs(c.get_x()+1) % this->height);}
+    else {bot = (c.get_x()+1) % this->height;}
 
-    if (copy[left][top]->get_alive() == true) {count++;}
-    if (copy[c.get_x()][top]->get_alive() == true) {count++;}
-    if (copy[right][top]->get_alive() == true) {count++;}
+    if (copy[top][left]->get_alive() == true) {count++;}
+    if (copy[top][c.get_y()]->get_alive() == true) {count++;}
+    if (copy[top][right]->get_alive() == true) {count++;}
 
-    if (copy[left][c.get_y()]->get_alive() == true) {count++;}
-    if (copy[right][c.get_y()]->get_alive() == true) {count++;}
+    if (copy[c.get_x()][left]->get_alive() == true) {count++;}
+    if (copy[c.get_x()][right]->get_alive() == true) {count++;}
 
-    if (copy[left][bot]->get_alive() == true) {count++;}
-    if (copy[c.get_x()][bot]->get_alive() == true) {count++;}
-    if (copy[right][bot]->get_alive() == true) {count++;}
+    if (copy[bot][left]->get_alive() == true) {count++;}
+    if (copy[bot][c.get_y()]->get_alive() == true) {count++;}
+    if (copy[bot][right]->get_alive() == true) {count++;}
 
     return count;
 }
@@ -117,21 +118,22 @@ int Grid::detection(Cell &c, std::vector<std::vector<Cell*>> &copy) {
 std::vector<std::vector<Cell*>> Grid::behavior(int x, int y) {
     Grid *game_copy = new Grid(*this);
     std::vector<std::vector<Cell*>> copy = this->get_Gmap();
-    Cell& c = game_copy->getCell(x, y);
-    int detec = detection(c, copy);
-    if (c.get_alive() && detec < 2) {
-        game_copy->modify(c.get_x(), c.get_y(), false);
+    Cell& c = this->getCell(x, y);
+    Cell& c2 = game_copy->getCell(x, y);
+    int detec = detection(c, this->Gmap);
+    if (c.get_alive() == 1 && detec < 2) {
+        game_copy->modify(c2.get_x(), c2.get_y(), false, copy);
     }
-    else if (c.get_alive() && (detec == 2 || detec == 3)) {
-        game_copy->modify(c.get_x(), c.get_y(), true);
+    else if (c.get_alive() == 1 && (detec == 2 || detec == 3)) {
+        game_copy->modify(c2.get_x(), c2.get_y(), true, copy);
     }
-    else if (c.get_alive() && detec > 3) {
-        game_copy->modify(c.get_x(), c.get_y(), false);
+    else if (c.get_alive() == 1  && detec > 3) {
+        game_copy->modify(c2.get_x(), c2.get_y(), false, copy);
     }
-    else if (!c.get_alive() && detec == 3) {
-        game_copy->modify(c.get_x(), c.get_y(), true);
+    else if (c.get_alive() == 0 && detec == 3) {
+        game_copy->modify(c2.get_x(), c2.get_y(), true, copy);
     }
-    return this->Gmap = copy;
+    return this->Gmap = game_copy->get_Gmap();
 }
 
 // Sauvegarder l'état actuel
