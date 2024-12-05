@@ -37,6 +37,7 @@ void CL_Window::set_size_cell(int h, int w) {
 
 void CL_Window::eternity(Grid& jeu) {
     sf::RenderWindow wind(sf::VideoMode(this->size_w, this->size_h), "Life's Game");
+    int counter = 1;
     while (wind.isOpen())
     {
         wind.setFramerateLimit(60);
@@ -67,6 +68,7 @@ void CL_Window::eternity(Grid& jeu) {
         }
         wind.display();
         jeu.Affichemap();
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::cout << counter++ << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
