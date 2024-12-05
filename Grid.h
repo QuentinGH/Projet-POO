@@ -26,6 +26,7 @@ public:
     int get_height() { return height; }
     int get_width() { return width; }
     std::vector<std::vector<Cell*>>& get_Gmap() { return Gmap;}
+    std::vector<std::vector<Cell*>>& set_Gmap(std::vector<std::vector<Cell*>>& g) { return Gmap = g;}
 
     int set_height(int nbr);
     int set_width(int nbr);
@@ -34,8 +35,8 @@ public:
     Cell& getCell(int i, int j);
     void afficherCell(int i, int j);
 
-    int detection(Cell &c);
-    void behavior(int x, int y);
+    int detection(Cell &c, std::vector<std::vector<Cell*>> &copy);
+    std::vector<std::vector<Cell*>> behavior(int x, int y);
 
     void sauvegarder(const std::string& nom_fichier);
     void charger(const std::string& nom_fichier);
