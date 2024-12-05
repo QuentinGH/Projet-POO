@@ -48,12 +48,13 @@ void CL_Window::eternity(Grid& jeu) {
                 wind.close();
         }
 
+        sf::RectangleShape square(sf::Vector2f((this->height * this->size_cell) / this->height, (this->width * this->size_cell) / this->width));
+        square.setOutlineColor(sf::Color::Black);
+        square.setOutlineThickness(this->size_outline);
+
         wind.clear();
         for (int count_1 = 0; count_1 < this->height; count_1++) {
             for (int count_2 = 0; count_2 < this->width; count_2++) {
-                sf::RectangleShape square(sf::Vector2f((this->height * this->size_cell) / this->height, (this->width * this->size_cell) / this->width));
-                square.setOutlineColor(sf::Color::Black);
-                square.setOutlineThickness(this->size_outline);
                 square.setPosition(this->size_cell * count_2, this->size_cell * count_1);
 
                 if (jeu.get_Gmap()[count_1][count_2]->get_alive() == true) {
