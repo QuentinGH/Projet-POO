@@ -25,15 +25,18 @@ Grid::Grid(int nbrheight, int nbrwidth) : height(nbrheight), width(nbrwidth) {
 Grid::~Grid() {
     for (auto& row : Gmap) {
         for (auto& cell : row) {
-            delete cell; // Libère chaque pointeur
+            if (cell) {
+                delete cell;
+                cell = nullptr; // Pour éviter des accès accidentels
+            }
         }
-        row.clear(); // Vide chaque ligne
     }
-    Gmap.clear(); // Vide le vecteur principal
+    Gmap.clear();
     while (!sauvegardes.empty()) {
         sauvegardes.pop();
     }
 }
+
 
 
 int Grid::set_height(int nbr) {
@@ -46,11 +49,23 @@ int Grid::set_width(int nbr) {
 
 void Grid::modify(int x, int y, bool b) {
     if (x >= 0 && x < get_height() && y >= 0 && y < get_width()) {
-        Gmap[x][y]->set_alive(b);  // Appel de la méthode sur l'objet Cell
+        Gmap[x][y]->set_alive_next(b);
+        std::cout << "Cell (" << x << ", " << y << ") set to " << (b ? "alive" : "dead") << " in next state.\n";
     } else {
         throw std::runtime_error("Erreur : mauvaises coordonnées");
     }
 }
+
+
+void Grid::update() {
+    for (size_t i = 0; i < Gmap.size(); ++i) {
+        for (size_t j = 0; j < Gmap[i].size(); ++j) {
+            Gmap[i][j]->set_alive(Gmap[i][j]->get_next());
+            Gmap[i][j]->set_alive_next(false); // Réinitialisation explicite
+        }
+    }
+}
+
 
 
 void Grid::Affichemap() {
@@ -85,13 +100,12 @@ void Grid::afficherCell(int i, int j) {
 
 // Sauvegarder l'état actuel
 void Grid::sauvegarder(const std::string& nom_fichier) {
-    // Créer une copie profonde de Gmap
     std::vector<std::vector<Cell>> copie;
     for (const auto& ligne : Gmap) {
         std::vector<Cell> nouvelle_ligne;
         for (const auto& cell : ligne) {
             if (cell) {
-                nouvelle_ligne.push_back(*cell); // Copier l'objet Cell pointé
+                nouvelle_ligne.push_back(*cell); // Copie profonde
             } else {
                 throw std::runtime_error("Cellule non initialisée dans la grille.");
             }
@@ -99,10 +113,10 @@ void Grid::sauvegarder(const std::string& nom_fichier) {
         copie.push_back(nouvelle_ligne);
     }
 
-    sauvegardes.push(copie);  // Pousser la copie dans la pile
+    sauvegardes.push(copie); // Stockage dans la pile
 
-    // Sauvegarder dans un fichier (comme avant)
-    std::ofstream fichier(nom_fichier, std::ios::app);
+    // Écriture dans un fichier
+    std::ofstream fichier(nom_fichier, std::ios::trunc); // Remplacez `std::ios::app` par `std::ios::trunc` si vous voulez écraser
     if (!fichier) {
         throw std::runtime_error("Impossible d'ouvrir le fichier de sauvegarde.");
     }
@@ -110,13 +124,14 @@ void Grid::sauvegarder(const std::string& nom_fichier) {
     fichier << "Height: " << height << " Width: " << width << "\n";
     for (const auto& ligne : copie) {
         for (const auto& cell : ligne) {
-            fichier << cell.get_alive() << " ";  // Sauvegarder seulement l'état de vie
+            fichier << cell.get_alive() << " "; // Sauvegarder l'état de vie
         }
         fichier << "\n";
     }
-    fichier << "END\n";
     fichier.close();
+    std::cout << "Grille sauvegardée dans le fichier '" << nom_fichier << "'.\n";
 }
+
 
 
 // Charger la dernière sauvegarde
