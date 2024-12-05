@@ -26,7 +26,7 @@ int main() {
 
     Grid jeu(values.first,values.second);
     jeu.Affichemap();
-    jeu.afficherCell(5,1);
+    jeu.update();
     jeu.sauvegarder("grille_out");
 
     jeu.modify(1, 1, 1);
@@ -34,10 +34,12 @@ int main() {
     jeu.sauvegarder("grille_out");
 
     jeu.modify(2, 1, 1);
+    jeu.update();
     jeu.Affichemap();
     jeu.sauvegarder("grille_out");
 
     jeu.modify(1, 3, 1);
+    jeu.update();
     jeu.Affichemap();
 
     jeu.charger("grille_out");
