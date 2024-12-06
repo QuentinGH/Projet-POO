@@ -100,71 +100,101 @@ void Grid::afficherCell(int i, int j) {
 
 // Sauvegarder l'état actuel
 void Grid::sauvegarder(const std::string& nom_fichier) {
-    std::vector<std::vector<Cell>> copie;
-    for (const auto& ligne : Gmap) {
-        std::vector<Cell> nouvelle_ligne;
-        for (const auto& cell : ligne) {
-            if (cell) {
-                nouvelle_ligne.push_back(*cell); // Copie profonde
-            } else {
-                throw std::runtime_error("Cellule non initialisée dans la grille.");
-            }
-        }
-        copie.push_back(nouvelle_ligne);
-    }
-
-    sauvegardes.push(copie); // Stockage dans la pile
-
-    // Écriture dans un fichier
-    std::ofstream fichier(nom_fichier, std::ios::trunc); // Remplacez `std::ios::app` par `std::ios::trunc` si vous voulez écraser
+    // Écriture dans un fichier sans effacer le contenu existant
+    std::ofstream fichier(nom_fichier, std::ios::app); // Mode append
     if (!fichier) {
         throw std::runtime_error("Impossible d'ouvrir le fichier de sauvegarde.");
     }
 
-    fichier << "Height: " << height << " Width: " << width << "\n";
-    for (const auto& ligne : copie) {
-        for (const auto& cell : ligne) {
-            fichier << cell.get_alive() << " "; // Sauvegarder l'état de vie
+    // Sauvegarde des dimensions de la grille
+    fichier << height << " " << width << "\n";
+
+    // Sauvegarde de l'état des cellules
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            fichier << Gmap[i][j]->get_alive() << " ";
         }
         fichier << "\n";
     }
+    fichier << "---\n"; // Séparateur pour indiquer un nouvel état
     fichier.close();
-    std::cout << "Grille sauvegardée dans le fichier '" << nom_fichier << "'.\n";
+
+    std::cout << "Grille sauvegardee dans le fichier '" << nom_fichier << "'.\n";
 }
 
 
 
 // Charger la dernière sauvegarde
 void Grid::charger(const std::string& nom_fichier) {
-    if (sauvegardes.empty()) {
-        throw std::runtime_error("Aucune sauvegarde disponible pour le chargement.");
+    std::ifstream fichier(nom_fichier);
+    if (!fichier) {
+        throw std::runtime_error("Impossible d'ouvrir le fichier de chargement.");
     }
 
-    // Récupérer l'état sauvegardé
-    auto copie = sauvegardes.top();
-    sauvegardes.pop();
+    std::vector<std::vector<std::string>> all_states;
+    std::vector<std::string> current_state;
+    std::string line;
 
-    // Nettoyer Gmap actuel
+    // Lecture de tous les états dans le fichier
+    while (std::getline(fichier, line)) {
+        if (line == "---") {
+            all_states.push_back(current_state); // Sauvegarder l'état
+            current_state.clear();              // Réinitialiser pour le prochain
+        } else {
+            current_state.push_back(line);
+        }
+    }
+    if (!current_state.empty()) {
+        all_states.push_back(current_state); // Dernier état
+    }
+    fichier.close();
+
+    // Si aucun état n'existe
+    if (all_states.empty()) {
+        std::cerr << "Aucun etat trouve dans le fichier.\n";
+        return;
+    }
+
+    // Charger le dernier état disponible
+    auto last_state = all_states.back();
+    all_states.pop_back(); // Supprimer le dernier état pour permettre un retour en arrière
+    std::ofstream output(nom_fichier, std::ios::trunc); // Réécrire le fichier sans cet état
+    for (const auto& state : all_states) {
+        for (const auto& line : state) {
+            output << line << "\n";
+        }
+        output << "---\n";
+    }
+    output.close();
+
+    // Analyse du dernier état
+    std::istringstream iss(last_state[0]); // Première ligne : dimensions
+    int new_height, new_width;
+    iss >> new_height >> new_width;
+
+    // Nettoyage de la grille actuelle
     for (auto& row : Gmap) {
         for (auto& cell : row) {
             delete cell;
         }
-        row.clear();
     }
     Gmap.clear();
 
-    // Recréer Gmap à partir de la copie
-    height = copie.size();
-    width = height > 0 ? copie[0].size() : 0;
+    // Recréation de la grille
+    height = new_height;
+    width = new_width;
     Gmap = std::vector<std::vector<Cell*>>(height, std::vector<Cell*>(width, nullptr));
 
-    for (size_t i = 0; i < copie.size(); ++i) {
-        for (size_t j = 0; j < copie[i].size(); ++j) {
-            Gmap[i][j] = new Cell(copie[i][j]); // Copier chaque cellule
+    // Charger les cellules
+    for (int i = 0; i < height; ++i) {
+        std::istringstream row_stream(last_state[i + 1]); // +1 pour ignorer la ligne dimensions
+        for (int j = 0; j < width; ++j) {
+            int alive_state;
+            row_stream >> alive_state;
+            Gmap[i][j] = new Cell(i, j);
+            Gmap[i][j]->set_alive(alive_state == 1);
         }
     }
+
+    std::cout << "Grille chargee depuis le fichier '" << nom_fichier << "'.\n";
 }
-
-
-
-
