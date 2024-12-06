@@ -46,14 +46,22 @@ int Grid::set_width(int nbr) {
     return this->width = nbr;
 }
 
-void Grid::modify(int x, int y, bool b, std::vector<std::vector<Cell*>> &g) {
-    int toric_x = (x + g.size()) % this->height; // g.size() donne le nombre de lignes (hauteur)
-    int toric_y = (y + g[0].size()) % this->width; // g[0].size() donne le nombre de colonnes (largeur)
-
-    if (toric_x >= 0 && toric_x < get_height() && toric_y >= 0 && toric_y < get_width()) {
-        Gmap[toric_x][toric_y]->set_alive(b);  // Appel de la méthode sur l'objet Cell
+void Grid::modify(int x, int y, bool b) {
+    if (x >= 0 && x < get_height() && y >= 0 && y < get_width()) {
+        Gmap[x][y]->set_alive_next(b);
+        std::cout << "Cell (" << x << ", " << y << ") set to " << (b ? "alive" : "dead") << " in next state.\n";
     } else {
         throw std::runtime_error("Erreur : mauvaises coordonnées");
+    }
+}
+
+
+void Grid::update() {
+    for (size_t i = 0; i < Gmap.size(); ++i) {
+        for (size_t j = 0; j < Gmap[i].size(); ++j) {
+            Gmap[i][j]->set_alive(Gmap[i][j]->get_next());
+            Gmap[i][j]->set_alive_next(false); // Réinitialisation explicite
+        }
     }
 }
 
@@ -122,16 +130,16 @@ std::vector<std::vector<Cell*>> Grid::behavior(int x, int y) {
     Cell& c2 = game_copy->getCell(x, y);
     int detec = detection(c, this->Gmap);
     if (c.get_alive() == 1 && detec < 2) {
-        game_copy->modify(c2.get_x(), c2.get_y(), false, copy);
+        game_copy->modify(c2.get_x(), c2.get_y(), false);
     }
     else if (c.get_alive() == 1 && (detec == 2 || detec == 3)) {
-        game_copy->modify(c2.get_x(), c2.get_y(), true, copy);
+        game_copy->modify(c2.get_x(), c2.get_y(), true);
     }
     else if (c.get_alive() == 1  && detec > 3) {
-        game_copy->modify(c2.get_x(), c2.get_y(), false, copy);
+        game_copy->modify(c2.get_x(), c2.get_y(), false);
     }
     else if (c.get_alive() == 0 && detec == 3) {
-        game_copy->modify(c2.get_x(), c2.get_y(), true, copy);
+        game_copy->modify(c2.get_x(), c2.get_y(), true);
     }
     return this->Gmap = game_copy->get_Gmap();
 }
