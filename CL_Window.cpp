@@ -67,9 +67,11 @@ void CL_Window::eternity(Grid& jeu) {
                 jeu.behavior(count_1, count_2);
             }
         }
+        jeu.update();
+        jeu.sauvegarder("grille_out.txt");
         wind.display();
         jeu.Affichemap();
         std::cout << counter++ << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
