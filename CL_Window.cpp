@@ -38,12 +38,11 @@ void CL_Window::set_size_cell(int h, int w) {
 void CL_Window::eternity(Grid& jeu) {
     sf::RenderWindow wind(sf::VideoMode(this->size_w, this->size_h), "Life's Game");
     int counter = 1;
-    while (wind.isOpen())
-    {
+    while (wind.isOpen()) {
+
         wind.setFramerateLimit(60);
         sf::Event event;
-        while (wind.pollEvent(event))
-        {
+        while (wind.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 wind.close();
         }
@@ -68,7 +67,7 @@ void CL_Window::eternity(Grid& jeu) {
             }
         }
         jeu.update();
-        jeu.sauvegarder("grille_out.txt");
+        jeu.sauvegarder("C:/Users/guerr/CLionProjects/SFML_test/grille_out");
         wind.display();
         jeu.Affichemap();
         std::cout << counter++ << std::endl;
