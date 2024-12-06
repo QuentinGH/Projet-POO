@@ -2,9 +2,9 @@
 #include <sstream>
 #include <iomanip>
 #include <utility>
-
 #include "CL_Window.h"
 #include "Grid.h"
+
 
 int main() {
     Grid grille;
@@ -24,43 +24,62 @@ int main() {
          << "\n- Height : " << values.first
          << "\n- Width : " << values.second << std::endl;
 
+
     Grid jeu(values.first,values.second);
-/*
-    jeu.modify(0, 0, 1);
-    jeu.sauvegarder("grille_out");
-    jeu.modify(1, 1, 1);
-    jeu.sauvegarder("grille_out");
-    jeu.modify(2, 1, 1);
-    jeu.sauvegarder("grille_out");
-    jeu.modify(1, 3, 1);
-    jeu.sauvegarder("grille_out");
-    jeu.modify(-1, 0,1);
-    jeu.sauvegarder("grille_out");
-    jeu.modify(1, 0, 1);
-    jeu.sauvegarder("grille_out");
+    /*
     jeu.Affichemap();
-*/
-    jeu.modify(1, 9, 1, jeu.get_Gmap());
-    jeu.modify(1, 10, 1, jeu.get_Gmap());
-    jeu.modify(1, 11, 1, jeu.get_Gmap());
+    jeu.update();
+    jeu.sauvegarder("grille_out");
 
-    jeu.modify(2, 3, 1, jeu.get_Gmap());
-    jeu.modify(2, 4, 1, jeu.get_Gmap());
-    jeu.modify(2, 5, 1, jeu.get_Gmap());
+    jeu.modify(1, 1, 1);
+    jeu.Affichemap();
+    jeu.sauvegarder("grille_out");
 
-    jeu.modify(2, 8, 1, jeu.get_Gmap());
-    jeu.modify(2, 9, 1, jeu.get_Gmap());
-    jeu.modify(2, 10, 1, jeu.get_Gmap());
+    jeu.modify(2, 1, 1);
+    jeu.update();
+    jeu.Affichemap();
+    jeu.sauvegarder("grille_out");
 
-    jeu.modify(6, 6, 1, jeu.get_Gmap());
-    jeu.modify(6, 7, 1, jeu.get_Gmap());
-    jeu.modify(7, 6, 1, jeu.get_Gmap());
+    jeu.modify(1, 3, 1);
+    jeu.update();
+    jeu.Affichemap();
 
-    jeu.modify(8, 9, 1, jeu.get_Gmap());
-    jeu.modify(9, 8, 1, jeu.get_Gmap());
-    jeu.modify(9, 9, 1, jeu.get_Gmap());
+    jeu.charger("grille_out");
+    jeu.Affichemap();
 
+    jeu.charger("grille_out");
+    jeu.Affichemap();
 
+    jeu.charger("grille_out");
+
+    jeu.modify(1, 9, 1);
+    jeu.modify(1, 10, 1);
+    jeu.modify(1, 11, 1);
+
+    jeu.modify(2, 3, 1);
+    jeu.modify(2, 4, 1);
+    jeu.modify(2, 5, 1);
+
+    jeu.modify(2, 8, 1);
+    jeu.modify(2, 9, 1);
+    jeu.modify(2, 10, 1);
+
+    jeu.modify(6, 6, 1);
+    jeu.modify(6, 7, 1);
+    jeu.modify(7, 6, 1);
+
+    jeu.modify(8, 9, 1);
+    jeu.modify(9, 8, 1);
+    jeu.modify(9, 9, 1);
+    */
+    jeu.modify(1, 5, 1);
+    jeu.modify(2, 3, 1);
+    jeu.modify(2, 5, 1);
+    jeu.modify(3, 4, 1);
+    jeu.modify(3, 5, 1);
+    /*
+    jeu.charger("grille_in.txt");
+    */
     jeu.Affichemap();
 
     CL_Window wind(values.first, values.second);
