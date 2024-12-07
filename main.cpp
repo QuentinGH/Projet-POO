@@ -2,12 +2,20 @@
 #include <sstream>
 #include <iomanip>
 #include <utility>
+#include <bits/stdc++.h>
+#include "CL_Window.h"
 #include "Grid.h"
-
 
 int main() {
     Grid grille;
     std::pair<int, int> values;
+
+    // Vider le fichier "grille_out" au démarrage
+    std::ofstream fichier("C:/Users/guerr/CLionProjects/SFML_test/grille_out", std::ios::trunc);
+    if (!fichier) {
+        std::cerr << "Erreur : Impossible de vider le fichier de sauvegarde.\n";
+    }
+    fichier.close();
 
     while (values.first <=0 && values.second <= 0) {
         std::cout << "You may enter the value of the grid's height and width (one after the other with a space between them): " << std::endl;
@@ -25,30 +33,34 @@ int main() {
 
 
     Grid jeu(values.first,values.second);
-    jeu.Affichemap();
-    jeu.afficherCell(5,1);
-    jeu.sauvegarder("grille_out");
+    /*
+    jeu.modify(1, 9, 1);
+    jeu.modify(1, 10, 1);
+    jeu.modify(1, 11, 1);
 
-    jeu.modify(1, 1, 1);
-    jeu.Affichemap();
-    jeu.sauvegarder("grille_out");
+    jeu.modify(2, 3, 1);
+    jeu.modify(2, 4, 1);
+    jeu.modify(2, 5, 1);
 
-    jeu.modify(2, 1, 1);
-    jeu.Affichemap();
-    jeu.sauvegarder("grille_out");
+    jeu.modify(2, 8, 1);
+    jeu.modify(2, 9, 1);
+    jeu.modify(2, 10, 1);
 
-    jeu.modify(1, 3, 1);
+    jeu.modify(6, 6, 1);
+    jeu.modify(6, 7, 1);
+    jeu.modify(7, 6, 1);
+
+    jeu.modify(8, 9, 1);
+    jeu.modify(9, 8, 1);
+    jeu.modify(9, 9, 1);
+    */
+    jeu.charger("C:/Users/guerr/CLionProjects/SFML_test/grille_in");
     jeu.Affichemap();
 
-    jeu.charger("grille_out");
-    jeu.Affichemap();
+    CL_Window wind(values.first, values.second);
+    wind.eternity(jeu);
 
-    jeu.charger("grille_out");
-    jeu.Affichemap();
-
-    jeu.charger("grille_out");
-    jeu.Affichemap();
-
+    jeu.sauvegarder("C:/Users/guerr/CLionProjects/SFML_test/grille_in");
 
     return 0;
 }
