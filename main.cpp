@@ -18,7 +18,7 @@ int main() {
     fichier.close();
 
     while (values.first <=0 && values.second <= 0) {
-        std::cout << "You may enter the value of the grid's height and width (one after the other with a space between them): " << std::endl;
+        std::cout << "Vous pouvez saisir la valeur de la hauteur et de la largeur de la grille (l'une apres l'autre avec un espace entre elles): " << std::endl;
 
         std::string line;
         std::getline(std::cin, line); // Lire toute la ligne d'entrée
@@ -33,27 +33,24 @@ int main() {
 
 
     Grid jeu(values.first,values.second);
-    /*
-    jeu.modify(1, 9, 1);
-    jeu.modify(1, 10, 1);
-    jeu.modify(1, 11, 1);
 
-    jeu.modify(2, 3, 1);
-    jeu.modify(2, 4, 1);
-    jeu.modify(2, 5, 1);
-
-    jeu.modify(2, 8, 1);
-    jeu.modify(2, 9, 1);
-    jeu.modify(2, 10, 1);
-
-    jeu.modify(6, 6, 1);
-    jeu.modify(6, 7, 1);
-    jeu.modify(7, 6, 1);
-
-    jeu.modify(8, 9, 1);
-    jeu.modify(9, 8, 1);
-    jeu.modify(9, 9, 1);
-    */
+    std::cout << "Veuillez indiquer si vous souhaitez une grille torique ou non torique (1 = torique, 0 = non torique):" << std::endl;
+    std::string commande;
+    while (std::getline(std::cin, commande)) {
+        if (commande == "1") {
+            jeu.bool_toric = 1;
+            std::cout << "Vous avez choisi : torique." << std::endl;
+            break;
+        }
+        else if (commande == "0") {
+            jeu.bool_toric = 0;
+            std::cout << "Vous avez choisi : non torique." << std::endl;
+            break;
+        }
+        else {
+            std::cout << "\nEntrez oui ou non" << std::endl;
+        }
+    }
     jeu.charger("C:/Users/guerr/CLionProjects/SFML_test/grille_in");
     jeu.Affichemap();
 
