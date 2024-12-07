@@ -29,9 +29,6 @@ Grid::~Grid() {
         row.clear(); // Vide chaque ligne
     }
     Gmap.clear(); // Vide le vecteur principal
-    while (!sauvegardes.empty()) {
-        sauvegardes.pop();
-    }
 }
 
 Grid::Grid(const Grid& other) {
@@ -96,34 +93,77 @@ void Grid::afficherCell(int i, int j) {
 }
 
 int Grid::detection(Cell c, std::vector<std::vector<Cell*>> copy) {
-    int left;
-    int right;
-    int top;
-    int bot;
     int count = 0;
 
-    if (c.get_y()-1 < 0) {left = this->width - (abs(c.get_y()-1) % this->width);}
-    else {left = (c.get_y()-1) % this->width;}
-    if (c.get_y()+1 < 0) {right = this->width - (abs(c.get_y()+1) % this->width);}
-    else {right = (c.get_y()+1) % this->width;}
-    if (c.get_x()-1 < 0) {top = this->height - (abs(c.get_x()-1) % this->height);}
-    else {top = (c.get_x()-1) % this->height;}
-    if (c.get_x()+1 < 0) {bot = this->height - (abs(c.get_x()+1) % this->height);}
-    else {bot = (c.get_x()+1) % this->height;}
+    if (bool_toric == 1) {
+        // torique
+        int left;
+        int right = (c.get_y()+1)% width;
+        int top;
+        int bot = (c.get_x()+1)% height;
+        if (c.get_y()-1 < 0) {left = this->width - (abs(c.get_y()-1) % this->width);}
+        else {left = (c.get_y()-1) % this->width;}
+        if (c.get_x()-1 < 0) {top = this->height - (abs(c.get_x()-1) % this->height);}
+        else {top = (c.get_x()-1) % this->height;}
 
-    if (copy[top][left]->get_alive() == true) {count++;}
-    if (copy[top][c.get_y()]->get_alive() == true) {count++;}
-    if (copy[top][right]->get_alive() == true) {count++;}
+        if (copy[top][left]->get_alive() == true) {count++;}
+        if (copy[top][c.get_y()]->get_alive() == true) {count++;}
+        if (copy[top][right]->get_alive() == true) {count++;}
 
-    if (copy[c.get_x()][left]->get_alive() == true) {count++;}
-    if (copy[c.get_x()][right]->get_alive() == true) {count++;}
+        if (copy[c.get_x()][left]->get_alive() == true) {count++;}
+        if (copy[c.get_x()][right]->get_alive() == true) {count++;}
 
-    if (copy[bot][left]->get_alive() == true) {count++;}
-    if (copy[bot][c.get_y()]->get_alive() == true) {count++;}
-    if (copy[bot][right]->get_alive() == true) {count++;}
+        if (copy[bot][left]->get_alive() == true) {count++;}
+        if (copy[bot][c.get_y()]->get_alive() == true) {count++;}
+        if (copy[bot][right]->get_alive() == true) {count++;}
+    }
+    else if (bool_toric == 0) {
+        // non torique
+        int left;
+        int right;
+        int top;
+        int bot;
+        if (c.get_y()-1 < 0) {left = -1;}
+        else {left = (c.get_y()-1);}
+        if (c.get_y()+1 >= this->width) {right = -1;}
+        else {right = (c.get_y()+1);}
+        if (c.get_x()-1 < 0) {top = -1;}
+        else {top = (c.get_x()-1);}
+        if (c.get_x()+1 >= this->height) {bot = -1;}
+        else {bot = (c.get_x()+1);}
 
+        if (top != -1 && left != -1) {
+            if (copy[top][left]->get_alive() == true) {count++;}
+        }
+        if (top != -1) {
+            if (copy[top][c.get_y()]->get_alive() == true) {count++;}
+        }
+        if (top != -1 && right != -1) {
+            if (copy[top][right]->get_alive() == true) {count++;}
+        }
+
+        if (left != -1) {
+            if (copy[c.get_x()][left]->get_alive() == true) {count++;}
+        }
+        if (right != -1) {
+            if (copy[c.get_x()][right]->get_alive() == true) {count++;}
+        }
+
+        if (bot != -1 && left != -1) {
+            if (copy[bot][left]->get_alive() == true) {count++;}
+        }
+        if (bot != -1) {
+            if (copy[bot][c.get_y()]->get_alive() == true) {count++;}
+        }
+        if (bot != -1 && right != -1) {
+            if (copy[bot][right]->get_alive() == true) {count++;}
+        }
+        std::cout << "Compteur: " << count << std::endl;
+    }
     return count;
 }
+
+
 
 std::vector<std::vector<Cell*>> Grid::behavior(int x, int y) {
     Grid *game_copy = new Grid(*this);
