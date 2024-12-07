@@ -12,7 +12,6 @@ private:
     int height;
     int width;
     std::vector<std::vector<Cell*>> Gmap;
-    std::stack<std::vector<std::vector<Cell>>> sauvegardes;
 
     void clearGmap();
 
@@ -21,10 +20,10 @@ public:
     Grid(int nbrheight, int nbrwidth);
     ~Grid();
 
+    bool bool_toric;
     Grid(const Grid& other);
-    Grid& operator=(const Grid& other);
-    int get_height() { return height; }
-    int get_width() { return width; }
+    int get_height() const { return height; }
+    int get_width() const { return width; }
     std::vector<std::vector<Cell*>>& get_Gmap() { return Gmap;}
     std::vector<std::vector<Cell*>>& set_Gmap(std::vector<std::vector<Cell*>>& g) { return Gmap = g;}
 
