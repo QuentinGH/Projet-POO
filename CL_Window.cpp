@@ -92,13 +92,17 @@ void CL_Window::eternity(Grid& jeu) {
             cell.set_alive(!cell.get_alive());
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) { // Faster (time)
-            time -= 100;
+            time -= 250;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { // Slower (time)
-            time += 100;
+            time += 250;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) { // Run / Pause
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) { // Pause / Resume
             run = !run;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) { // Return (retourner à une version precedente)
+            jeu.charger("C:/Users/guerr/CLionProjects/SFML_test/grille_out");
+            wind.display();
         }
 
         wind.setFramerateLimit(60);
