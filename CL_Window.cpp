@@ -13,11 +13,11 @@ CL_Window::CL_Window(int h, int w) {
 }
 
 void CL_Window::set_size_h(int setting) {
-    this->height = setting;
+    this->size_h = setting;
 }
 
 void CL_Window::set_size_w(int setting) {
-    this->width = setting;
+    this->size_w = setting;
 }
 
 void CL_Window::set_size_cell(int h, int w) {
