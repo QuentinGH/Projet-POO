@@ -163,7 +163,7 @@ int main() {
             break;
         }
         else {
-            std::cout << "\nEntrez oui ou non" << std::endl;
+            std::cout << "\nEntrez 1 ou 0" << std::endl;
         }
     }
     jeu.charger("C:/Users/guerr/CLionProjects/SFML_test/grille_in");
