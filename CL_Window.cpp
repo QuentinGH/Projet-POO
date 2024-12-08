@@ -100,15 +100,33 @@ void CL_Window::eternity(Grid& jeu) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) { // Pause / Resume
             run = !run;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) { // Return (retourner à une version precedente)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { // Retourner à une version precedente
             jeu.charger("C:/Users/guerr/CLionProjects/SFML_test/grille_out");
             wind.display();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { // Avancer à une nouvelle version
+            for (int count_1 = 0; count_1 < this->height; count_1++) {
+                for (int count_2 = 0; count_2 < this->width; count_2++) {
+                    square.setPosition(this->size_cell * count_2, this->size_cell * count_1);
+
+                    if (jeu.get_Gmap()[count_1][count_2]->get_alive() == true) {
+                        square.setFillColor(sf::Color::White);
+                    }
+                    else {
+                        square.setFillColor(sf::Color::Black);
+                    }
+                    wind.draw(square);
+                    jeu.behavior(count_1, count_2);
+                }
+            }
+            jeu.update();
+            std::cout << counter++ << std::endl;
         }
 
         wind.setFramerateLimit(60);
         sf::Event event;
         while (wind.pollEvent(event)) {
-            if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || counter > 2000)
                 wind.close();
         }
 
