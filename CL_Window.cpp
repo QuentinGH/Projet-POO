@@ -110,10 +110,10 @@ void CL_Window::eternity(Grid& jeu) {
                     square.setPosition(this->size_cell * count_2, this->size_cell * count_1);
 
                     if (jeu.get_Gmap()[count_1][count_2]->get_alive() == true) {
-                        square.setFillColor(sf::Color::White);
+                        square.setFillColor(sf::Color::Black);
                     }
                     else {
-                        square.setFillColor(sf::Color::Black);
+                        square.setFillColor(sf::Color::White);
                     }
                     wind.draw(square);
                     jeu.behavior(count_1, count_2);
@@ -136,10 +136,10 @@ void CL_Window::eternity(Grid& jeu) {
                 square.setPosition(this->size_cell * count_2, this->size_cell * count_1);
 
                 if (jeu.get_Gmap()[count_1][count_2]->get_alive() == true) {
-                    square.setFillColor(sf::Color::White);
+                    square.setFillColor(sf::Color::Black);
                 }
                 else {
-                    square.setFillColor(sf::Color::Black);
+                    square.setFillColor(sf::Color::White);
                 }
                 wind.draw(square);
                 if (run) {
