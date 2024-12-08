@@ -1,9 +1,10 @@
-    #include <iostream>
-    #include <sstream>
-    #include <iomanip>
-    #include <utility>
-    #include "Grid.h"
-    #include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <utility>
+#include <bits/stdc++.h>
+#include "CL_Window.h"
+#include "Grid.h"
 
 void test() {
     std::cout << "=== TESTS UNITAIRES ===" << std::endl;
@@ -71,6 +72,49 @@ void test() {
             std::cout << "Fail" << std::endl;
         }
 
+    // Test constructeur
+    std::cout << "CL_Window Test 1 (Constructeur): ";
+    CL_Window window(10, 10);
+    if (window.get_height() == 10 && window.get_width() == 10 &&
+        window.get_size_h() == 800 && window.get_size_w() == 800) {
+        std::cout << "Pass" << std::endl;
+        } else {
+            std::cout << "Fail" << std::endl;
+        }
+
+    // Test setters
+    std::cout << "CL_Window Test 2 (Setters): ";
+    window.set_size_h(700);
+    window.set_size_w(700);
+    if (window.get_size_h() == 700 && window.get_size_w() == 700) {
+        std::cout << "Pass" << std::endl;
+    } else {
+        std::cout << "Fail" << std::endl;
+    }
+
+    // Test méthode set_size_cell
+    std::cout << "CL_Window Test 3 (set_size_cell): ";
+    window.set_size_cell(20, 20);  // Exemple de configuration
+    if (window.get_size_cell() == 35) {  // Supposons que cette méthode configure correctement
+        std::cout << "Pass" << std::endl;
+    } else {
+        std::cout << "Fail" << std::endl;
+    }
+
+    // Test méthode eternity
+    std::cout << "CL_Window Test 4 (eternity avec Grid): ";
+    Grid grid(10, 10);
+    grid.modify(5, 5, true);
+    grid.modify(5, 6, true);
+    grid.modify(5, 7, true);  // Exemple d'initialisation pour un motif
+
+    try {
+        window.eternity(grid);  // On vérifie que cette méthode peut fonctionner
+        std::cout << "Pass" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Fail: Exception attrapée - " << e.what() << std::endl;
+    }
+
     std::cout << "=== TESTS TERMINEES ===" << std::endl;
 }
 
@@ -78,19 +122,18 @@ int main() {
 
     test();
 
-    
     Grid grille;
     std::pair<int, int> values;
 
     // Vider le fichier "grille_out" au démarrage
-    std::ofstream fichier("C:/Users/quent/Documents/GitHub/Projet-POO/grille_out", std::ios::trunc);
+    std::ofstream fichier("C:/Users/guerr/CLionProjects/SFML_test/grille_out", std::ios::trunc);
     if (!fichier) {
         std::cerr << "Erreur : Impossible de vider le fichier de sauvegarde.\n";
     }
     fichier.close();
 
     while (values.first <=0 && values.second <= 0) {
-        std::cout << "You may enter the value of the grid's height and width (one after the other with a space between them): " << std::endl;
+        std::cout << "Vous pouvez saisir la valeur de la hauteur et de la largeur de la grille (l'une apres l'autre avec un espace entre elles): " << std::endl;
 
         std::string line;
         std::getline(std::cin, line); // Lire toute la ligne d'entrée
@@ -106,35 +149,30 @@ int main() {
 
     Grid jeu(values.first,values.second);
 
-/*
-    jeu.Affichemap();
-    jeu.update();
-    jeu.sauvegarder("C:/Users/quent/Documents/GitHub/Projet-POO/grille_out");
-
-    jeu.modify(4, 1, 1);
-    jeu.modify(2, 5, 1);
-    jeu.update();
-    jeu.Affichemap();
-    jeu.sauvegarder("C:/Users/quent/Documents/GitHub/Projet-POO/grille_out");
-
-    jeu.modify(1, 1, 1);
-    jeu.modify(2, 1, 1);
-    jeu.update();
-    jeu.Affichemap();
-    jeu.sauvegarder("C:/Users/quent/Documents/GitHub/Projet-POO/grille_out");
-
-    jeu.modify(1, 3, 1);
-    jeu.update();
-    jeu.Affichemap();
-
-    jeu.charger("C:/Users/quent/Documents/GitHub/Projet-POO/grille_out");
-    jeu.Affichemap();
-    jeu.charger("C:/Users/quent/Documents/GitHub/Projet-POO/grille_out");
+    std::cout << "Veuillez indiquer si vous souhaitez une grille torique ou non torique (1 = torique, 0 = non torique):" << std::endl;
+    std::string commande;
+    while (std::getline(std::cin, commande)) {
+        if (commande == "1") {
+            jeu.bool_toric = 1;
+            std::cout << "Vous avez choisi : torique." << std::endl;
+            break;
+        }
+        else if (commande == "0") {
+            jeu.bool_toric = 0;
+            std::cout << "Vous avez choisi : non torique." << std::endl;
+            break;
+        }
+        else {
+            std::cout << "\nEntrez oui ou non" << std::endl;
+        }
+    }
+    jeu.charger("C:/Users/guerr/CLionProjects/SFML_test/grille_in");
     jeu.Affichemap();
 
-    */
+    CL_Window wind(values.first, values.second);
+    wind.eternity(jeu);
 
-    jeu.charger("C:/Users/quent/Documents/GitHub/Projet-POO/grille_in");
-    jeu.Affichemap();
+    jeu.sauvegarder("C:/Users/guerr/CLionProjects/SFML_test/grille_in");
+
     return 0;
 }
