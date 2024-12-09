@@ -6,6 +6,7 @@ private:
     int x;
     int y;
     bool alive;
+    bool next;
 
 public:
 
@@ -14,11 +15,12 @@ public:
 
     int get_x() const { return x; }
     int get_y() const { return y; }
-    int set_x(int nbr);
-    int set_y(int nbr);
-    bool get_alive() const { return alive; };
-
-    bool set_alive(bool b);
+    bool get_alive() const { return alive; }
+    bool get_next() const { return next; }
+    void set_x(int nbr);
+    void set_y(int nbr);
+    void set_alive(bool b);
+    void set_alive_next(bool b);
 
 };
 
